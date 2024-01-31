@@ -1,11 +1,10 @@
-  USE [DotNetCourseDatabase]
-  GO
+USE [DotNetCourseDatabase]
+GO
 
-  /*CREATE PROCEDURE TutorialAppSchema.spUsers_Get*/
-  ALTER PROCEDURE TutorialAppSchema.spUsers_Get
-  /*EXEC [TutorialAppSchema].spUsers_Get*/
-  AS
-  BEGIN
+/*CREATE PROCEDURE TutorialAppSchema.spUsers_Get*/
+ALTER PROCEDURE TutorialAppSchema.spUsers_Get
+AS
+BEGIN
     SELECT 
         [Users].[UserId],
         [Users].[FirstName],
@@ -14,6 +13,8 @@
         [Users].[Gender],
         [Users].[Active] 
     FROM TutorialAppSchema.Users AS Users
-  END
+END
+GO
 
-  EXEC [TutorialAppSchema].spUsers_Get
+EXEC [TutorialAppSchema].spUsers_Get
+GO
