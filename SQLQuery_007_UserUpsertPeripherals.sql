@@ -8,7 +8,7 @@ CREATE OR ALTER PROCEDURE TutorialAppSchema.spUser_Upsert
 	@Gender NVARCHAR(50),
 	@JobTitle NVARCHAR(50),
 	@Department NVARCHAR(50),
-    @Salary DECIMAL(18,4),
+	@Salary DECIMAL(18,4),
 	@Active BIT = 1,
 	@UserId INT = NULL
 AS
