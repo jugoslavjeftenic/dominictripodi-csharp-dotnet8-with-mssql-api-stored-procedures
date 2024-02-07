@@ -14,63 +14,64 @@ CREATE OR ALTER PROCEDURE TutorialAppSchema.spUser_Upsert
 AS
     BEGIN
     IF EXISTS (SELECT * FROM TutorialAppSchema.Users WHERE UserId = @UserId)
-        IF EXISTS (SELECT * FROM TutorialAppSchema.Users WHERE Email = @Email)
-            BEGIN
-            UPDATE TutorialAppSchema.Users SET
-                [FirstName] = @FirstName,
-                [LastName] = @LastName,
-                [Email] = @Email,
-                [Gender] = @Gender,
-                [Active] = @Active
-            WHERE UserId = @UserId
+        BEGIN
+        UPDATE TutorialAppSchema.Users SET
+            [FirstName] = @FirstName,
+            [LastName] = @LastName,
+            [Email] = @Email,
+            [Gender] = @Gender,
+            [Active] = @Active
+        WHERE UserId = @UserId
 
-            UPDATE TutorialAppSchema.UserSalary SET
-                [Salary] = @Salary
-            WHERE UserId = @UserId
+        UPDATE TutorialAppSchema.UserSalary SET
+            [Salary] = @Salary
+        WHERE UserId = @UserId
 
-            UPDATE TutorialAppSchema.UserJobInfo SET
-                [JobTitle] = @JobTitle,
-                [Department] = @Department
-            WHERE UserId = @UserId
-
-            END
+        UPDATE TutorialAppSchema.UserJobInfo SET
+            [JobTitle] = @JobTitle,
+            [Department] = @Department
+        WHERE UserId = @UserId
+        END
     ELSE
         BEGIN
-        DECLARE @OutputUserId INT
+        IF NOT EXISTS (SELECT * FROM TutorialAppSchema.Users WHERE Email = @Email)
+            BEGIN
+            DECLARE @OutputUserId INT
 
-        INSERT INTO TutorialAppSchema.Users(
-            [FirstName],
-            [LastName],
-            [Email],
-            [Gender],
-            [Active]
-        ) VALUES (
-            @FirstName,
-            @LastName,
-            @Email,
-            @Gender,
-            @Active
-        )
+            INSERT INTO TutorialAppSchema.Users(
+                [FirstName],
+                [LastName],
+                [Email],
+                [Gender],
+                [Active]
+            ) VALUES (
+                @FirstName,
+                @LastName,
+                @Email,
+                @Gender,
+                @Active
+            )
 
-        SET @OutputUserId = @@IDENTITY
+            SET @OutputUserId = @@IDENTITY
 
-        INSERT INTO TutorialAppSchema.UserSalary(
-            [UserId],
-            [Salary]
-        ) VALUES (
-            @OutputUserId,
-            @Salary
-        )
+            INSERT INTO TutorialAppSchema.UserSalary(
+                [UserId],
+                [Salary]
+            ) VALUES (
+                @OutputUserId,
+                @Salary
+            )
 
-        INSERT INTO TutorialAppSchema.UserJobInfo(
-            [UserId],
-            [JobTitle],
-            [Department]
-        ) VALUES (
-            @OutputUserId,
-            @JobTitle,
-            @Department
-        )
+            INSERT INTO TutorialAppSchema.UserJobInfo(
+                [UserId],
+                [JobTitle],
+                [Department]
+            ) VALUES (
+                @OutputUserId,
+                @JobTitle,
+                @Department
+            )
+            END
         END
     END
 GO
